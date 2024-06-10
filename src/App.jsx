@@ -37,8 +37,29 @@ function App() {
       setError(error.message);
       setLoading(false);
     })
-    
+  };
+
+  const handleTypeChange = (e) => {
+    const {name, value} = e.target;
+    if(name === 'type1') {
+      setType(value);
+    } 
+    // else {
+    //   setType(value);
+    // }
   }
+
+  const handleAbilityChange = (e) => {
+    const {name, value} = e.target;
+    if(name === 'type') {
+      setType(value);
+    }
+    // else {
+    //   setType(value);
+    // }
+  }
+
+  
 
   return (
     <>
