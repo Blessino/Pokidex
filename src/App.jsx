@@ -5,7 +5,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   cosnt[error, setError] = useState(null);
-  const[pokemonList, srtPokemonList] = useState([]);
+  const[pokemonList, setPokemonList] = useState([]);
   cosnt[filteredPokemon, setFilteredPokemon] = useState([]);
   const[type, setType] = useState('');
 
@@ -57,7 +57,33 @@ function App() {
     // else {
     //   setType(value);
     // }
+  };
+
+  const filterByType = () => {
+    let filtered = pokemonList;
+    if (type) {
+      filterd= filtered.filter((pokemon) => 
+      pokemon.type.some((type) => type.type.name === type)
+    );
+    }
+    setFilteredPokemon(filtered);
   }
+
+  useEffect(() => {
+    filterByType();
+  },[type]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if(search) {
+      const foundPokemon = pokemonList.filter((pokemon) => {
+        pokemon.name.toLowerCase().includes(search.toLowerCase())
+      });
+      setFilteredPokemon(foundPokemon);
+    } else {
+      setFilteredPokemon(pokemonList);
+    }
+  };
 
   
 
