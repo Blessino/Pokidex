@@ -18,7 +18,7 @@ function App() {
     setLoading(true);
     setError(null);
 
-    fetch(`{url}?limit=10`)
+    fetch(`${url}?limit=10`)
     .then((response) => {
       if(!response.ok) throw new Error('Failed to fetch pokemon list');
       return response.json();
@@ -73,6 +73,10 @@ function App() {
     filterByType();
   },[type]);
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  }
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if(search) {
@@ -85,12 +89,42 @@ function App() {
     }
   };
 
-  
-
   return (
-    <>
-      {console.log(data)}
-    </>
+    <div>
+      <h1>Pokemon Search</h1>
+      <form onSubmit={handleSearchSubmit}>
+        <input 
+        type="text" 
+        value={search}
+        onChange={handleSearchChange} />
+        <button type='submit'>Search</button>
+      </form>
+      <div>
+        <label>Type 1:
+        <input type="text" name='type' value={type} onChange={handleTypeChange} placeholder='Enter the Type' />
+        </label>
+      </div>
+      {loading && <P>Loading...</P>}
+      {error && <p>{error}</p>}
+      {filteredPokemon && filteredPokemon.length > 0 ? (
+        <div className='pokemon--list'>
+          {filteredPokemon.map((pokemon) => (
+            <div key={pokemon.id} className='pokemon--card'>
+              <h3>ID: #{pokemon.id}</h3>
+              <img src={pokemon.sprites.front_shiny} alt={pokemon.name} />
+              <p><strong>Weight:</strong>{pokemon.weight}g</p>
+              <p><strong>Height:</strong> {pokemon.height * 10}in</p>
+              <p><strong>Type:</strong> {pokemon.types.map((type) => type.type.name).join(', ')}</p>
+              <p><strong>Abilities:</strong> {pokemon.abilities.map((ability) => ability.ability.name).join(', ')}</p>
+          </div>
+          ))}
+          </div>
+      ) : (
+        !loading && <p>No Pokemon Found</p>
+      )
+      }
+      
+    </div>
   )
 }
 
